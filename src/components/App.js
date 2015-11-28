@@ -3,20 +3,13 @@ import Article from './article'
 import NewArticle from './NewArticle'
 import {articles} from '../stores'
 
-const articlesData = [{
-    title: 'title',
-    text: 'some text'
-}, {
-    title: 'some other',
-    text: 'Lorem ipsum'
-}]
-
 class App extends Component {
     constructor() {
         super()
-        this.state = {
-            articles: articles.getAll()
-        }
+        this.state = this.getArticlesState()
+    }
+
+    componentDidMount() {
         articles.addChangeListener(this.changeArticles)
     }
 
@@ -25,14 +18,18 @@ class App extends Component {
     }
 
     render() {
-        const articles = this.state.articles.map((article) => {
+        const {articles, error, loading} = this.state
+        if (loading) return <h1>LOADING...</h1>
+        if (error) return <h1>Error: {error.message}</h1>
+
+        const articleItems = articles.map((article) => {
             return <li key= {article.title}><Article article = {article}/></li>
         })
         return(
             <div>
                 <h1>News App!</h1>
                 <ul>
-                    {articles}
+                    {articleItems}
                 </ul>
                 <NewArticle />
             </div>
@@ -40,9 +37,15 @@ class App extends Component {
     }
 
     changeArticles = () => {
-        this.setState({
-            articles: articles.getAll()
-        })
+        this.setState(this.getArticlesState())
+    }
+
+    getArticlesState() {
+        return {
+            articles: articles.getOrLoadAll(),
+            loading: articles.loading,
+            error: articles.error
+        }
     }
 }
 
