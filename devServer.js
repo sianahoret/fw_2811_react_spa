@@ -7,14 +7,12 @@ var app = express();
 var compiler = webpack(config);
 
 // Proxy to API server
-/*
 var proxy = require('http-proxy').createProxyServer({
   target: 'http://localhost:3001/api'
 })
 app.use('/api', function(req, res) {
   proxy.web(req, res)
 })
-*/
 
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
