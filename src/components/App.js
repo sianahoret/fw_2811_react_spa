@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Article from './article'
+import NewArticle from './NewArticle'
 
 const articlesData = [{
     title: 'title',
@@ -20,6 +21,7 @@ class App extends Component {
                 <ul>
                     {articles}
                 </ul>
+                <NewArticle />
             </div>
         )
     }
