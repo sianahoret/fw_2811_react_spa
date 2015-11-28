@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Article from './article'
 import NewArticle from './NewArticle'
+import {articles} from '../stores'
 
 const articlesData = [{
     title: 'title',
@@ -11,8 +12,20 @@ const articlesData = [{
 }]
 
 class App extends Component {
+    constructor() {
+        super()
+        this.state = {
+            articles: articles.getAll()
+        }
+        articles.addChangeListener(this.changeArticles)
+    }
+
+    componentWillUnmount() {
+        articles.removeChangeListener(this.changeArticles)
+    }
+
     render() {
-        const articles = articlesData.map((article) => {
+        const articles = this.state.articles.map((article) => {
             return <li key= {article.title}><Article article = {article}/></li>
         })
         return(
@@ -24,6 +37,12 @@ class App extends Component {
                 <NewArticle />
             </div>
         )
+    }
+
+    changeArticles = () => {
+        this.setState({
+            articles: articles.getAll()
+        })
     }
 }
 

@@ -1,4 +1,6 @@
 import React, {Component, PropTypes} from 'react'
+import {addArticle} from '../actions/articles'
+
 const style = {
     display: 'inline-block',
     width: 300,
@@ -19,7 +21,7 @@ class NewArticle extends Component {
             <div>
                 title: <input onChange = {this.change('title')} value = {this.state.title}/>
                 text: <input onChange = {this.change('text')} value = {this.state.text}/>
-                <div style= {style}>
+                <div style= {style} onClick = {addArticle.bind(this, this.state)}>
                     add article
                 </div>
             </div>
