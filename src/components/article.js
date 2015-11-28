@@ -3,13 +3,19 @@ import React, {Component, PropTypes} from 'react'
 
 class Article extends Component {
     static propTypes = {
-        article: PropTypes.object
+        article: PropTypes.shape({
+            title: PropTypes.string.isRequired,
+            text: PropTypes.string.isRequired
+        })
     }
     constructor() {
         super()
         this.state = {
             comment: ''
         }
+    }
+    shouldComponentUpdate(newProps, newState) {
+        return this.props.article != newProps.article
     }
     componentDidMount() {
         const {header} = this.refs
@@ -21,7 +27,7 @@ class Article extends Component {
     }
     render() {
         const {article} = this.props
-
+        if (!article) return <h1>placeholder</h1>
         return (
             <div>
                 <h1 ref = "header">{article.title}</h1>
