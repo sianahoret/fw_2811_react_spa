@@ -13,6 +13,7 @@ class ArticleStore extends AbstractStore {
         super()
         this.dipatchTocken = Dispatcher.register((action) => {
             const {actionType, data, error} = action
+            console.log('---', actionType);
             switch (actionType) {
                 case ADD_ARTICLE:
                     this.add(data)
