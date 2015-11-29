@@ -1,24 +1,27 @@
 import STORE_CHANGE_EVENT from '../actions/constants'
-import {EventEmitter} from 'events'
+import Dispatcher from '../Dispatcher'
 
-class AbstractStore extends EventEmitter {
+class AbstractStore {
     constructor() {
-        super()
         this.loading = false
         this.loaded = false
         this.__items = []
     }
 
     emitChange() {
-        this.emit(STORE_CHANGE_EVENT)
+        Dispatcher.dispatchAsync(STORE_CHANGE_EVENT)
     }
 
     addChangeListener(callback) {
-        this.on(STORE_CHANGE_EVENT, callback)
+        Dispatcher.register((event) => {
+            const {eventType} = event
+            if(STORE_CHANGE_EVENT == eventType) {
+                callback()
+            }
+        })
     }
 
     removeChangeListener(callback) {
-        this.removeListener(STORE_CHANGE_EVENT, callback)
     }
 
     getAll() {
