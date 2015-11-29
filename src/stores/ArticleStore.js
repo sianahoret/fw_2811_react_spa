@@ -11,30 +11,32 @@ import {
 class ArticleStore extends AbstractStore {
     constructor() {
         super()
-        this.dipatchTocken = Dispatcher.register((action) => {
-            const {actionType, data, error} = action
+        Dispatcher.register(ADD_ARTICLE, (action) => {
+            const {actionType, data} = action
             console.log('---', actionType);
-            switch (actionType) {
-                case ADD_ARTICLE:
-                    this.add(data)
-                    this.emitChange()
-                    break
-                case LOAD_ALL_ARTICLES_START:
-                    this.loading = true
-                    this.loaded = false
-                    this.emitChange()
-                    break
-                case LOAD_ALL_ARTICLES_SUCCESS:
-                    this.addArticles(data)
-                    this.emitChange()
-                    break
-                case LOAD_ALL_ARTICLES_FAIL:
-                    this.loaded = false
-                    this.loading = false
-                    this.error = error
-                    this.emitChange()
-                    break;
-            }
+            this.add(data)
+            this.emitChange()
+        })
+        Dispatcher.register(LOAD_ALL_ARTICLES_START, (action) => {
+            const {actionType} = action
+            console.log('---', actionType);
+            this.loading = true
+            this.loaded = false
+            this.emitChange()
+        })
+        Dispatcher.register(LOAD_ALL_ARTICLES_SUCCESS, (action) => {
+            const {actionType, data} = action
+            console.log('---', actionType);
+            this.addArticles(data)
+            this.emitChange()
+        })
+        Dispatcher.register(LOAD_ALL_ARTICLES_FAIL, (action) => {
+            const {actionType, error} = action
+            console.log('---', actionType);
+            this.loaded = false
+            this.loading = false
+            this.error = error
+            this.emitChange()
         })
     }
 
